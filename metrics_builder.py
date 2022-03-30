@@ -4,6 +4,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 note = 'Note that in binary classification, recall of the positive class is also known as “sensitivity”; recall of ' \
        'the negative class is “specificity”.';
 
+
 def __get_confusion_matrix(model, test_generator, batch_size):
     predictions = model.predict(test_generator, 300 // batch_size + 1)
     x = []
@@ -54,5 +55,3 @@ def generate_classification_report(model, test_dataset, batch_size):
     else:
         print('Classification Report')
         print(__get_classification_report(model, test_dataset, batch_size))
-
-
