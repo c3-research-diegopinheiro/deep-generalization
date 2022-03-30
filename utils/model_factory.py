@@ -5,7 +5,7 @@ from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 
 
-def compile_model(layers, alpha):
+def __compile_model(layers, alpha):
     model = models.Sequential()
 
     for layer in layers:
@@ -23,7 +23,7 @@ def compile_model(layers, alpha):
     return model
 
 
-def data_augment(dataset_path, batch_size, input_shape):
+def __data_augment(dataset_path, batch_size, input_shape):
     image_gen = ImageDataGenerator(rotation_range=40, rescale=1 / 255, horizontal_flip=True, vertical_flip=True)
 
     print(dataset_path)
@@ -38,7 +38,7 @@ def data_augment(dataset_path, batch_size, input_shape):
     return train_images, validation_images, test_images
 
 
-def create_callbacks(alpha):
+def __create_callbacks(alpha):
     filepath = "model_one.hdf5"
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.1, min_delta=alpha, patience=5, verbose=1)
@@ -49,9 +49,9 @@ def create_callbacks(alpha):
 
 
 def generate_model(dataset_path, input_shape, batch_size, alpha, epoch, layers):
-    model = compile_model(layers, alpha)
-    callbacks = create_callbacks(alpha)
-    train_images, validation_images, test_images = data_augment(dataset_path, batch_size, input_shape)
+    model = __compile_model(layers, alpha)
+    callbacks = __create_callbacks(alpha)
+    train_images, validation_images, test_images = __data_augment(dataset_path, batch_size, input_shape)
 
     print("Iniciando treino do Modelo...")
     history = model.fit(
