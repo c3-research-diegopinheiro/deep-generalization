@@ -18,8 +18,6 @@ def __get_classification_report(model, test_generator, batch_size):
         x.append((pred[0] > 0.5).astype("int32"))
 
     target_names = ['Yes', 'No']
-    print(test_generator.classes)
-    print(x)
     return classification_report(test_generator.classes, x, target_names=target_names)
 
 
@@ -47,11 +45,11 @@ def generate_classification_report(model, test_dataset, batch_size):
                                                        class_mode='binary',
                                                        batch_size=batch_size,
                                                        save_to_dir=None)
-        print('Classification Report 2')
+        print('Classification Report')
         print(__get_classification_report(model, test_generator, batch_size))
 
     else:
-        print('Classification Report 3')
+        print('Classification Report')
         print(__get_classification_report(model, test_dataset, batch_size))
 
 
