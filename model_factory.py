@@ -65,14 +65,3 @@ def generate_model(dataset_path, input_shape, batch_size, alpha, epoch, layers):
     model.evaluate(test_images)
 
     return history, model
-
-
-bs = 8
-alp = 1e-3
-eph = 30
-i_shape = (200, 200, 3)
-lyrs = [Flatten(input_shape=i_shape),
-        Dense(128),
-        Dense(1, activation='sigmoid')]
-
-generate_model('DATASET', i_shape, bs, alp, eph, lyrs)
