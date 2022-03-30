@@ -62,4 +62,4 @@ def generate_model(dataset_path, input_shape, batch_size, alpha, epoch, layers):
 
     model.evaluate(test_images)
 
-    return history, model
+    return history, model, train_images, validation_images, test_images
