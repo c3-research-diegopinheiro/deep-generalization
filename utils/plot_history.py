@@ -22,6 +22,7 @@ def plot_history(history):
         plt.plot(epochs, history.history[l], 'g',
                  label='Validation loss (' + str(str(format(history.history[l][-1], '.5f')) + ')'))
 
+    plt.ylim([0, 1])
     plt.title('Loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
