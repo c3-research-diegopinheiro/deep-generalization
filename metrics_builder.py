@@ -47,11 +47,11 @@ def generate_classification_report(model, test_dataset, batch_size):
                                                        class_mode='binary',
                                                        batch_size=batch_size,
                                                        save_to_dir=None)
-        print('Classification Report')
+        print('Classification Report 2')
         print(__get_classification_report(model, test_generator, batch_size))
 
     else:
-        print('Classification Report')
+        print('Classification Report 3')
         print(__get_classification_report(model, test_dataset, batch_size))
 
 
