@@ -18,7 +18,7 @@ def __get_classification_report(model, test_generator, batch_size):
         x.append((pred[0] > 0.5).astype("int32"))
 
     target_names = ['Yes', 'No']
-    classification_report(test_generator.classes, x, target_names=target_names)
+    return classification_report(test_generator.classes, x, target_names=target_names)
 
 
 def generate_confusion_matrix(model, test_dataset, batch_size):
