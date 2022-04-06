@@ -13,7 +13,7 @@ def plot_history(history):
 
     epochs = range(1, len(history.history[loss_list[0]]) + 1)
 
-    ## Loss
+    # Loss
     plt.figure(1)
     for l in loss_list:
         plt.plot(epochs, history.history[l], 'b',
@@ -28,7 +28,7 @@ def plot_history(history):
     plt.ylabel('Loss')
     plt.legend()
 
-    ## Accuracy
+    # Accuracy
     plt.figure(2)
     for l in acc_list:
         plt.plot(epochs, history.history[l], 'b',
