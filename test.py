@@ -1,10 +1,13 @@
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, ZeroPadding2D, Flatten, Dense, Activation, Dropout, \
     GlobalAveragePooling2D
+from keras import models
 import builders.model_builder as model_builder
 import builders.metrics_builder as metrics_builder
+from utils.results_writer import write_metrics_results
 from generate_dataset import generate_dataset
 import json
+
 
 dataset_configs = json.load(open('dataset_configs.json', 'r'))
 generate_dataset(dataset_configs)
@@ -28,8 +31,8 @@ for dataset in dataset_configs:
                                                    class_mode='binary',
                                                    batch_size=batch_size,
                                                    save_to_dir=None)
-    print('\n')
-    metrics_builder.generate_confusion_matrix(dataset['name'], model, test_generator, batch_size)
 
-    print('\n')
-    metrics_builder.generate_classification_report(dataset['name'], model, test_generator, batch_size)
+    cm = metrics_builder.generate_confusion_matrix(dataset['name'], model, test_generator, batch_size)
+    cr = metrics_builder.generate_classification_report(dataset['name'], model, test_generator, batch_size)
+
+    write_metrics_results(cr, cm)
