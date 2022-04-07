@@ -32,7 +32,7 @@ for dataset in dataset_configs:
                                                    batch_size=batch_size,
                                                    save_to_dir=None)
 
-    cm = metrics_builder.generate_confusion_matrix(dataset['name'], model, test_generator, batch_size)
-    cr = metrics_builder.generate_classification_report(dataset['name'], model, test_generator, batch_size)
+    cm = metrics_builder.generate_confusion_matrix(model, test_generator, batch_size)
+    cr = metrics_builder.generate_classification_report(model, test_generator, batch_size)
 
-    write_metrics_results(cr, cm)
+    write_metrics_results(dataset['name'], cr, cm)

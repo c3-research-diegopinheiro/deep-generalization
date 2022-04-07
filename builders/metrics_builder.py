@@ -33,22 +33,22 @@ def __get_classification_report(model, test_generator, batch_size):
     return classification_report(test_generator.classes, predictions, target_names=target_names)
 
 
-def generate_confusion_matrix(name, model, test_dataset, batch_size):
+def generate_confusion_matrix(model, test_dataset, batch_size):
     if isinstance(test_dataset, str):
         test_generator = __mount_test_dataset_generator(test_dataset, batch_size)
-        print('Confusion Matrix')
+        print('Generating Confusion Matrix')
         cm = __get_confusion_matrix(model, test_generator, batch_size)
         print(cm)
         return cm
 
     else:
-        print('Generting Confusion Matrix')
+        print('Generating Confusion Matrix')
         cm = __get_confusion_matrix(model, test_dataset, batch_size)
         print(cm)
         return cm
 
 
-def generate_classification_report(name, model, test_dataset, batch_size):
+def generate_classification_report(model, test_dataset, batch_size):
     print(sensitivity_specificity_note)
     if isinstance(test_dataset, str):
         test_generator = __mount_test_dataset_generator(test_dataset, batch_size)

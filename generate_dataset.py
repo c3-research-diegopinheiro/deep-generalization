@@ -6,12 +6,12 @@ import os
 from utils.mkdir_dataset import mkdir_dataset
 
 
-def __write_images(dataset_name, folders, rows):
-    folder_kind = rows[0]
-    default_image_path = 'DATASET/default/' + '/'.join(rows)
+def __write_images(dataset_name, folders, image_path_arr):
+    folder_kind = image_path_arr[0]
+    default_image_path = 'DATASET/default/' + '/'.join(image_path_arr)
     img = cv2.imread(default_image_path)
 
-    new_image_path = 'DATASET/' + dataset_name + '/' + '/'.join(rows)
+    new_image_path = 'DATASET/' + dataset_name + '/' + '/'.join(image_path_arr)
     if not os.path.exists(new_image_path):
         if folders[folder_kind]['noise']:
             noise_img = random_noise(img, mode='salt', amount=folders[folder_kind]['amount'])

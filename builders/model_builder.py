@@ -39,7 +39,7 @@ def __data_augment(dataset_path, batch_size, input_shape):
 
 
 def __create_callbacks(alpha):
-    filepath = "model_one.hdf5"
+    filepath = "output/last_model_generated.hdf5"
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.1, min_delta=alpha, patience=5, verbose=1)
     erl_stopping = tf.keras.callbacks.EarlyStopping(patience=3, monitor='val_loss', verbose=1)
