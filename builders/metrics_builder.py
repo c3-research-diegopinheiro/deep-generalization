@@ -39,25 +39,44 @@ def __get_classification_report(model, test_generator, batch_size):
     return classification_report(test_generator.classes, predictions, target_names=target_names)
 
 
-def generate_confusion_matrix(model, test_dataset, batch_size):
+def generate_confusion_matrix(name, model, test_dataset, batch_size):
     if isinstance(test_dataset, str):
         test_generator = __mount_test_dataset_generator(test_dataset, batch_size)
         print('Confusion Matrix')
-        # sn.heatmap([[144, 6], [102, 48]], annot=True, fmt='g')
-        print(__get_confusion_matrix(model, test_generator, batch_size))
+        cm = __get_confusion_matrix(model, test_generator, batch_size)
+        # f = open(name + ".txt", "a")
+        # f.write(cm.__str__())
+        # f.close()
+        print(cm)
+        return cm
 
     else:
         print('Confusion Matrix')
-        print(__get_confusion_matrix(model, test_dataset, batch_size))
+        cm = __get_confusion_matrix(model, test_dataset, batch_size)
+        # f = open(name + ".txt", "a")
+        # f.write(cm.__str__())
+        # f.close()
+        print(cm)
+        return cm
 
 
-def generate_classification_report(model, test_dataset, batch_size):
+def generate_classification_report(name, model, test_dataset, batch_size):
     print(note)
     if isinstance(test_dataset, str):
         test_generator = __mount_test_dataset_generator(test_dataset, batch_size)
         print('Classification Report')
-        print(__get_classification_report(model, test_generator, batch_size))
+        cr = __get_classification_report(model, test_generator, batch_size)
+        # f = open(name + ".txt", "a")
+        # f.write(cr.__str__())
+        # f.close()
+        print(cr)
+        return cr
 
     else:
         print('Classification Report')
-        print(__get_classification_report(model, test_dataset, batch_size))
+        cr = __get_classification_report(model, test_dataset, batch_size)
+        # f = open(name + ".txt", "a")
+        # f.write(cr.__str__())
+        # f.close()
+        print(cr)
+        return cr

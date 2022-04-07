@@ -131,8 +131,6 @@ dmypy.json
 # others
 .vscode
 .idea
-DATASET
-DATASET_2
-DATASET_3
+DATASET/*
 DATASET.zip
 .DS_Store
