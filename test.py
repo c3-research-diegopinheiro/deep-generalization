@@ -1,8 +1,9 @@
-from utils.results_writer import write_metrics_results
+from utils.results_writer import ResultsWriter
 from model_configs import model_configs
 from builders import dataset_builder, metrics_builder, model_builder
 
 
+rw = ResultsWriter()
 for model_config in model_configs:
     dataset_builder.generate_dataset(model_config)
     batch_size = model_config['batch_size']
@@ -18,4 +19,4 @@ for model_config in model_configs:
     cm = metrics_builder.generate_confusion_matrix(model, test_images, batch_size)
     cr = metrics_builder.generate_classification_report(model, test_images, batch_size)
 
-    write_metrics_results(model_config['name'], cr, cm)
+    rw.write_metrics_results(model_config['name'], cr, cm)
