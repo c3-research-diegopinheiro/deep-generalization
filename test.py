@@ -20,3 +20,4 @@ for model_config in model_configs:
     cr = metrics_builder.generate_classification_report(model, test_images, batch_size)
 
     rw.write_metrics_results(model_config['name'], cr, cm)
+    rw.write_model(model, model_config['name'])

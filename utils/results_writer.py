@@ -48,3 +48,7 @@ class ResultsWriter:
                      ]]
 
         pd.concat([df, pd.DataFrame(data=sequence, columns=df.columns)], ignore_index=True).to_csv('output/results.csv')
+
+    def write_model(self, model, model_name):
+        model.save(self.results_folder + '/' + model_name + '.hdf5')
+
