@@ -38,13 +38,11 @@ def generate_confusion_matrix(model, test_dataset, batch_size):
         test_generator = __mount_test_dataset_generator(test_dataset, batch_size)
         print('Generating Confusion Matrix')
         cm = __get_confusion_matrix(model, test_generator, batch_size)
-        print(cm)
         return cm
 
     else:
         print('Generating Confusion Matrix')
         cm = __get_confusion_matrix(model, test_dataset, batch_size)
-        print(cm)
         return cm
 
 
@@ -54,11 +52,9 @@ def generate_classification_report(model, test_dataset, batch_size):
         test_generator = __mount_test_dataset_generator(test_dataset, batch_size)
         print('Generating Classification Report')
         cr = __get_classification_report(model, test_generator, batch_size)
-        print(cr)
         return cr
 
     else:
         print('Generating Classification Report')
         cr = __get_classification_report(model, test_dataset, batch_size)
-        print(cr)
         return cr

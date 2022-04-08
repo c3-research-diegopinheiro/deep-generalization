@@ -21,10 +21,8 @@ def __write_images(dataset_name, folders, image_path_arr):
             cv2.imwrite(new_image_path, img)
 
 
-def generate_dataset(configs):
-    for dataset in configs:
-        mkdir_dataset(dataset['name'])
-        df = pd.read_csv('dataframe.csv')
-        [__write_images(dataset['name'], dataset['folders'], rows) for rows in df[['Dataset', 'State', 'Path']].to_numpy()]
-
+def generate_dataset(model_config):
+    mkdir_dataset(model_config['name'])
+    df = pd.read_csv('dataframe.csv')
+    [__write_images(model_config['name'], model_config['dataset_structure'], rows) for rows in df[['Dataset', 'State', 'Path']].to_numpy()]
 
