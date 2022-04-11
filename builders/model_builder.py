@@ -42,8 +42,8 @@ def __data_augment(model_name, batch_size, input_shape):
     return train_images, validation_images, test_images
 
 
-def __create_callbacks(model_name, alpha):
-    filepath = "output/" + model_name + '.hdf5'
+def __create_callbacks(alpha):
+    filepath = 'output/last_generated_model.hdf5'
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.1, min_delta=alpha, patience=5, verbose=1)
     erl_stopping = tf.keras.callbacks.EarlyStopping(patience=3, monitor='val_loss', verbose=1)
@@ -54,7 +54,7 @@ def __create_callbacks(model_name, alpha):
 
 def generate_model(model_name, input_shape, batch_size, alpha, epoch, layers):
     model = __compile_model(layers, alpha)
-    callbacks = __create_callbacks(model_name, alpha)
+    callbacks = __create_callbacks(alpha)
     train_images, validation_images, test_images = __data_augment(model_name, batch_size, input_shape)
 
     print("Iniciando treino do Modelo...")

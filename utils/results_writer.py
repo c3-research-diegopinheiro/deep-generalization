@@ -31,7 +31,7 @@ class ResultsWriter:
         pd.DataFrame(columns=results_columns).to_csv(self.results_folder + '/results.csv')
 
     def write_metrics_results(self, model_name, cr, cm):
-        if not os.path.isfile('output/results.csv'):
+        if not os.path.isfile(self.results_folder + '/results.csv'):
             self.__generate_results_csv()
 
         df = self.__generate_df_by_csv()
@@ -47,7 +47,7 @@ class ResultsWriter:
                      cm[0][0], cm[0][1], cm[1][0], cm[1][1]
                      ]]
 
-        pd.concat([df, pd.DataFrame(data=sequence, columns=df.columns)], ignore_index=True).to_csv('output/results.csv')
+        pd.concat([df, pd.DataFrame(data=sequence, columns=df.columns)], ignore_index=True).to_csv(self.results_folder + '/results.csv')
 
     def write_model(self, model, model_name):
         model.save(self.results_folder + '/' + model_name + '.hdf5')
