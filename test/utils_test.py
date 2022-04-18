@@ -1,7 +1,6 @@
 import os
 import shutil
 import unittest
-from utils.consts import dataset_structure
 from utils.mkdir_dataset import mkdir_dataset
 
 
@@ -12,17 +11,25 @@ class UtilsTest(unittest.TestCase):
 
         mkdir_dataset(dataset_test_name)
 
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/train'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/test'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/validation'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/train/yes'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/train/no'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/test/yes'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/test/no'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/validation/yes'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/validation/no'), True)
+        for dataset_type in ['train', 'validation', 'test']:
+            self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/' + dataset_type), True)
+            for classification in ['yes', 'no']:
+                self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/' + dataset_type + '/' + classification), True)
 
         try:
-            shutil.rmtree('DATASET/' + dataset_test_name)
+            shutil.rmtree(f'DATASET/{dataset_test_name}')
+        except OSError as e:
+            print(e)
+
+    def test_should_cant_generate_dataset_that_already_exists(self):
+        dataset_test_name = 'dataset_test_name'
+
+        mkdir_dataset(dataset_test_name)
+
+        has_been_twice_created = mkdir_dataset(dataset_test_name)
+        self.assertFalse(has_been_twice_created)
+
+        try:
+            shutil.rmtree(f'DATASET/{dataset_test_name}')
         except OSError as e:
             print(e)

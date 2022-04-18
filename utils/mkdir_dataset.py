@@ -9,5 +9,7 @@ def mkdir_dataset(new_dataset_folder_name):
             for classification in dataset_structure[key]:
                 os.makedirs(new_dataset_folder_path + '/' + key + '/' + classification)
         print('dataset folder created inside DATASET/: ' + new_dataset_folder_name)
+        return True
     else:
         print('dataset folder already exists: ' + new_dataset_folder_name)
+        return False
