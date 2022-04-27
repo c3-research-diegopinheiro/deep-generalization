@@ -23,16 +23,16 @@ def __compile_model(layers, alpha):
     return model
 
 
-def __data_augment(model_name, batch_size, input_shape):
+def __data_augment(folder_name, batch_size, input_shape):
     image_gen = ImageDataGenerator(rotation_range=40, rescale=1 / 255, horizontal_flip=True, vertical_flip=True)
 
-    train_images = image_gen.flow_from_directory('DATASET/' + model_name + '/train', target_size=input_shape[:2],
+    train_images = image_gen.flow_from_directory(f'DATASET/{folder_name}/train', target_size=input_shape[:2],
                                                  batch_size=batch_size, class_mode='binary')
-    validation_images = image_gen.flow_from_directory('DATASET/' + model_name + '/validation',
+    validation_images = image_gen.flow_from_directory(f'DATASET/{folder_name}/validation',
                                                       target_size=input_shape[:2], batch_size=batch_size,
                                                       class_mode='binary')
 
-    test_images = ImageDataGenerator(rescale=1 / 255).flow_from_directory('DATASET/' + model_name + '/test',
+    test_images = ImageDataGenerator(rescale=1 / 255).flow_from_directory(f'DATASET/{folder_name}/test',
                                                                           target_size=(200, 200),
                                                                           shuffle=False,
                                                                           class_mode='binary',
@@ -52,10 +52,10 @@ def __create_callbacks(alpha):
     return callbacks
 
 
-def generate_model(model_name, input_shape, batch_size, alpha, epoch, layers):
+def generate_model(input_shape, batch_size, alpha, epoch, layers, folder_name):
     model = __compile_model(layers, alpha)
     callbacks = __create_callbacks(alpha)
-    train_images, validation_images, test_images = __data_augment(model_name, batch_size, input_shape)
+    train_images, validation_images, test_images = __data_augment(folder_name, batch_size, input_shape)
 
     print("Iniciando treino do Modelo...")
     history = model.fit(

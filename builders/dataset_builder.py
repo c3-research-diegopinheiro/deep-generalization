@@ -23,6 +23,7 @@ def __write_images(dataset_name, folders, image_path_arr):
 
 def generate_dataset(model_config):
     mkdir_dataset(model_config['name'])
+    print('Copying images to the new dataset')
     df = pd.read_csv('dataframe.csv')
     [__write_images(model_config['name'], model_config['dataset_structure'], rows) for rows in df[['Dataset', 'State', 'Path']].to_numpy()]
 

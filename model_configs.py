@@ -69,20 +69,6 @@ model_configs = [
             Dense(64, activation='relu'),
             Dense(1, activation='sigmoid')
         ],
-        "dataset_structure": {
-            "train": {
-                "noise": True,
-                "amount": 0.1
-            },
-            "validation": {
-                "noise": True,
-                "amount": 0.1
-            },
-            "test": {
-                "noise": False,
-                "amount": 0
-            }
-        },
     },
     {
         "name": "cnn_noisy_10%_only_train_validation",

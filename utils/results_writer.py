@@ -17,10 +17,10 @@ def isfloat(num):
 class ResultsWriter:
 
     def __init__(self):
-        self.results_folder = 'output/results_' + datetime.now().isoformat().__str__()
+        self.results_folder = f'output/results_{datetime.now().isoformat().__str__()}'
         os.mkdir(self.results_folder)
-        shutil.copy('model_configs.py', self.results_folder + '/model_configs.txt')
-        os.chmod(self.results_folder + '/model_configs.txt', S_IREAD)
+        # shutil.copy('model_configs.py', self.results_folder + '/model_configs.txt')
+        # os.chmod(self.results_folder + '/model_configs.txt', S_IREAD)
 
     def __generate_df_by_csv(self):
         df = pd.read_csv(self.results_folder + '/results.csv')
