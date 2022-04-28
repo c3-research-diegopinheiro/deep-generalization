@@ -1,44 +1,35 @@
-from tensorflow.keras.layers import Flatten, Dense, Conv2D, MaxPooling2D, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from builders import metrics_builder, model_builder
 from utils.results_writer import ResultsWriter
-from pathlib import Path
+from model_configs import model_configs
 
-rw = ResultsWriter()
+model_config = model_configs[0]
+rw = ResultsWriter(model_config['name'])
 
-network = {
-    "batch_size": 15,
-    "alpha": 1e-3,
-    "epochs": 30,
-    "input_shape": (200, 200, 3),
-    "layers": [
-        Flatten(input_shape=(200, 200, 3)),
-        Dense(64, activation='relu'),
-        Dense(32, activation='relu'),
-        Dense(16, activation='relu'),
-        Dense(1, activation='sigmoid')
-    ]
-}
-
-
-def train_model_for_dataset(folder_name):
-    dataset_folder_name = folder_name.split('/')[1]
-    print(f'Training for {dataset_folder_name} dataset')
-    history, model, train_images, validation_images, test_images = model_builder.generate_model(
-        network['input_shape'],
-        network['batch_size'],
-        network['alpha'],
-        network['epochs'],
-        network['layers'],
-        dataset_folder_name,
+for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
+    trained_model = model_builder.train_model_for_dataset(
+        model_config, f'dataset/train_{noise_amount}', f'dataset/validation_{noise_amount}'
     )
+    rw.write_model(trained_model, f'train_{noise_amount}')
 
-    cm = metrics_builder.generate_confusion_matrix(model, test_images, network['batch_size'])
-    cr = metrics_builder.generate_classification_report(model, test_images, network['batch_size'])
+    for noise_amount_testing in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
+        test_images = ImageDataGenerator(rescale=1 / 255).flow_from_directory(
+            f'DATASET/test_{noise_amount_testing}',
+            target_size=(200, 200),
+            shuffle=False,
+            class_mode='binary',
+            batch_size=model_configs[0]['batch_size'],
+            save_to_dir=None)
 
-    rw.write_metrics_results(dataset_folder_name, cr, cm)
-    rw.write_model(model, dataset_folder_name)
+        trained_model.evaluate(test_images)
 
+        cm = metrics_builder.generate_confusion_matrix(trained_model, test_images, model_config['batch_size'])
+        cr = metrics_builder.generate_classification_report(trained_model, test_images, model_config['batch_size'])
 
-p = Path('./DATASET')
-[train_model_for_dataset(str(f)) for f in p.iterdir() if f.is_dir()]
-# train_model_for_dataset(str(list(p.iterdir())[2]))
+        rw.write_metrics_results(
+            f'train_{noise_amount}_test_{noise_amount_testing}',
+            noise_amount,
+            noise_amount_testing,
+            cr,
+            cm
+        )

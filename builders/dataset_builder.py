@@ -6,24 +6,23 @@ import os
 from utils.mkdir_dataset import mkdir_dataset
 
 
-def __write_images(dataset_name, folders, image_path_arr):
-    folder_kind = image_path_arr[0]
-    default_image_path = 'DATASET/default/' + '/'.join(image_path_arr)
+def __write_images(dataset_name, noise_amount, image_path_arr):
+    default_image_path = f'DATASET/default/{"/".join(image_path_arr)}'
     img = cv2.imread(default_image_path)
-
-    new_image_path = 'DATASET/' + dataset_name + '/' + '/'.join(image_path_arr)
+    print(f'Creating {noise_amount}: {"/".join(image_path_arr)}')
+    new_image_path = f'DATASET/{dataset_name}/{image_path_arr[1]}/{image_path_arr[2]}'
     if not os.path.exists(new_image_path):
-        if folders[folder_kind]['noise']:
-            noise_img = random_noise(img, mode='salt', amount=folders[folder_kind]['amount'])
-            noise_img = np.array(255 * noise_img, dtype='uint8')
-            cv2.imwrite(new_image_path, noise_img)
-        else:
-            cv2.imwrite(new_image_path, img)
+        gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        noise_img = random_noise(gray_image, mode='salt', amount=noise_amount)
+        noise_img = np.array(255 * noise_img, dtype='uint8')
+        cv2.imwrite(new_image_path, noise_img)
 
 
-def generate_dataset(model_config):
-    mkdir_dataset(model_config['name'])
+def generate_dataset(dataset_name, dataset_kind, noise_amount):
+    mkdir_dataset(dataset_name)
     print('Copying images to the new dataset')
     df = pd.read_csv('dataframe.csv')
-    [__write_images(model_config['name'], model_config['dataset_structure'], rows) for rows in df[['Dataset', 'State', 'Path']].to_numpy()]
-
+    [
+        __write_images(dataset_name, noise_amount, path_array)
+        for path_array in df[['Dataset', 'State', 'Path']].to_numpy() if path_array[0] == dataset_kind
+    ]

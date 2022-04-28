@@ -12,17 +12,17 @@ class UtilsTest(unittest.TestCase):
 
         mkdir_dataset(dataset_test_name)
 
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/train'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/test'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/validation'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/train/yes'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/train/no'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/test/yes'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/test/no'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/validation/yes'), True)
-        self.assertEqual(os.path.exists('DATASET/' + dataset_test_name + '/validation/no'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/train'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/test'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/validation'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/train/yes'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/train/no'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/test/yes'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/test/no'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/validation/yes'), True)
+        self.assertEqual(os.path.exists('dataset/' + dataset_test_name + '/validation/no'), True)
 
         try:
-            shutil.rmtree('DATASET/' + dataset_test_name)
+            shutil.rmtree('dataset/' + dataset_test_name)
         except OSError as e:
             print(e)

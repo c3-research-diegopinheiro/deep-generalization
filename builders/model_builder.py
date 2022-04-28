@@ -23,23 +23,16 @@ def __compile_model(layers, alpha):
     return model
 
 
-def __data_augment(folder_name, batch_size, input_shape):
+def __data_augment(train_path, validation_path, batch_size, input_shape):
     image_gen = ImageDataGenerator(rotation_range=40, rescale=1 / 255, horizontal_flip=True, vertical_flip=True)
 
-    train_images = image_gen.flow_from_directory(f'DATASET/{folder_name}/train', target_size=input_shape[:2],
+    train_images = image_gen.flow_from_directory(train_path, target_size=input_shape[:2],
                                                  batch_size=batch_size, class_mode='binary')
-    validation_images = image_gen.flow_from_directory(f'DATASET/{folder_name}/validation',
+    validation_images = image_gen.flow_from_directory(validation_path,
                                                       target_size=input_shape[:2], batch_size=batch_size,
                                                       class_mode='binary')
 
-    test_images = ImageDataGenerator(rescale=1 / 255).flow_from_directory(f'DATASET/{folder_name}/test',
-                                                                          target_size=(200, 200),
-                                                                          shuffle=False,
-                                                                          class_mode='binary',
-                                                                          batch_size=batch_size,
-                                                                          save_to_dir=None)
-
-    return train_images, validation_images, test_images
+    return train_images, validation_images
 
 
 def __create_callbacks(alpha):
@@ -52,18 +45,33 @@ def __create_callbacks(alpha):
     return callbacks
 
 
-def generate_model(input_shape, batch_size, alpha, epoch, layers, folder_name):
+def __generate_model(input_shape, batch_size, alpha, epoch, layers, train_path, validation_path):
     model = __compile_model(layers, alpha)
     callbacks = __create_callbacks(alpha)
-    train_images, validation_images, test_images = __data_augment(folder_name, batch_size, input_shape)
+    train_images, validation_images = __data_augment(train_path, validation_path, batch_size, input_shape)
 
     print("Iniciando treino do Modelo...")
     history = model.fit(
         train_images,
         validation_data=validation_images,
         callbacks=callbacks,
-        epochs=epoch)
+        epochs=epoch
+    )
 
-    model.evaluate(test_images)
+    return history, model, train_images, validation_images
 
-    return history, model, train_images, validation_images, test_images
+
+def train_model_for_dataset(model_config, train_folder_path, validation_folder_path):
+    print(f'Training for {train_folder_path} and {validation_folder_path} dataset')
+    history, model, train_images, validation_images = __generate_model(
+        model_config['input_shape'],
+        model_config['batch_size'],
+        model_config['alpha'],
+        model_config['epochs'],
+        model_config['layers'],
+        train_folder_path,
+        validation_folder_path,
+    )
+
+
+    return model
