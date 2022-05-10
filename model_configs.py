@@ -16,7 +16,7 @@ model_configs = [
         ]
     },
     {
-        "name": "simple-mlp",
+        "name": "cnn",
         "batch_size": 15,
         "alpha": 1e-3,
         "epochs": 30,

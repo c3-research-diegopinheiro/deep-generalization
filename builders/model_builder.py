@@ -40,7 +40,6 @@ def __create_callbacks(alpha):
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.1, min_delta=alpha, patience=5, verbose=1)
     erl_stopping = tf.keras.callbacks.EarlyStopping(patience=3, monitor='val_loss', verbose=1)
-
     callbacks = [checkpoint, lr_reduce, erl_stopping]
     return callbacks
 
@@ -72,6 +71,5 @@ def train_model_for_dataset(model_config, train_folder_path, validation_folder_p
         train_folder_path,
         validation_folder_path,
     )
-
 
     return model

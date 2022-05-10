@@ -15,19 +15,20 @@ def isfloat(num):
 class ResultsWriter:
 
     def __init__(self, name):
+        self.results_name = name
         self.results_folder = f'output/results_{name}_{datetime.now().isoformat().__str__()}'
         os.mkdir(self.results_folder)
 
     def __generate_df_by_csv(self):
-        df = pd.read_csv(self.results_folder + '/mlp_results.csv')
+        df = pd.read_csv(self.results_folder + f'/results_{self.results_name}.csv')
         df.drop('Unnamed: 0', axis=1, inplace=True)
         return df
 
     def __generate_results_csv(self):
-        pd.DataFrame(columns=results_columns).to_csv(self.results_folder + '/results.csv')
+        pd.DataFrame(columns=results_columns).to_csv(self.results_folder + f'/results_{self.results_name}.csv')
 
     def write_metrics_results(self, model_name, train_dataset_noise, test_dataset_noise, cr, cm):
-        if not os.path.isfile(self.results_folder + '/results.csv'):
+        if not os.path.isfile(self.results_folder + f'/results_{self.results_name}.csv'):
             self.__generate_results_csv()
 
         df = self.__generate_df_by_csv()
@@ -45,8 +46,11 @@ class ResultsWriter:
         ]]
 
         pd.concat([df, pd.DataFrame(data=sequence, columns=df.columns)], ignore_index=True)\
-            .to_csv(self.results_folder + '/results.csv')
+            .to_csv(self.results_folder + f'/results_{self.results_name}.csv')
 
     def write_model(self, model, model_name):
         model.save(f'{self.results_folder}/{model_name}.hdf5')
+
+    def delete_results(self):
+        os.rmdir(self.results_folder)
 
