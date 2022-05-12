@@ -1,4 +1,5 @@
 from tensorflow.keras.layers import Flatten, Dense, Conv2D, MaxPooling2D, Dropout
+from tensorflow.keras.applications import VGG16, ResNet50
 
 model_configs = [
     {
@@ -31,5 +32,38 @@ model_configs = [
             Dropout(0.2),
             Dense(1, activation='sigmoid'),
         ]
+    },
+    {
+        "name": "vgg16",
+        "batch_size": 15,
+        "alpha": 1e-3,
+        "epochs": 30,
+        "input_shape": (200, 200, 3),
+        "layers": [
+            VGG16(
+                include_top=False,
+                input_shape=(200, 200, 3)
+            ),
+            Flatten(),
+            Dropout(0.5),
+            Dense(1, activation='sigmoid'),
+        ]
+    },
+    {
+        "name": "resnet50",
+        "batch_size": 15,
+        "alpha": 1e-3,
+        "epochs": 30,
+        "input_shape": (200, 200, 3),
+        "layers": [
+            ResNet50(
+                include_top=False,
+                input_shape=(200, 200, 3)
+            ),
+            Flatten(),
+            Dropout(0.5),
+            Dense(1, activation='sigmoid'),
+        ]
     }
 ]
+

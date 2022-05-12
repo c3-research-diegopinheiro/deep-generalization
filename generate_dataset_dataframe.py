@@ -10,4 +10,3 @@ for ext in ['*.jpg', '*.jpeg', '*.JPG', '*.png']:
 
 df = pd.DataFrame(data=paths, columns=['Dataset', 'State', 'Path'])
 df.to_csv('dataframe.csv')
-

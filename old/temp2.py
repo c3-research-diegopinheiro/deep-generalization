@@ -2,7 +2,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-df = pd.read_csv('output/cnn_results_2022-04-27T01:24:15.999932/cnn_results.csv')
+df = pd.read_csv('../output/cnn_results_2022-04-27T01:24:15.999932/cnn_results.csv')
 
 # data = df[['train-dataset-noise', 'test-dataset-noise', 'f1-score(weighted-avg)']].to_numpy()
 
