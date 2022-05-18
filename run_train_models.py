@@ -5,7 +5,7 @@ from builders import metrics_builder, model_builder
 from utils.results_writer import ResultsWriter
 from model_configs import model_configs
 
-model_config = model_configs[3]
+model_config = model_configs[1]
 try:
     rw = ResultsWriter(model_config['name'])
     for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:

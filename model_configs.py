@@ -64,6 +64,36 @@ model_configs = [
             Dropout(0.5),
             Dense(1, activation='sigmoid'),
         ]
-    }
+    },
+    {
+        "name": "simple-mlp-2",
+        "batch_size": 15,
+        "alpha": 1e-3,
+        "epochs": 30,
+        "input_shape": (200, 200, 3),
+        "layers": [
+            Flatten(input_shape=(200, 200, 3)),
+            Dense(64, activation='relu'),
+            Dense(32, activation='relu'),
+            Dense(16, activation='relu'),
+            Dense(8, activation='relu'),
+            Dense(1, activation='sigmoid'),
+        ]
+    },
+    {
+        "name": "simple-mlp-3",
+        "batch_size": 15,
+        "alpha": 1e-3,
+        "epochs": 30,
+        "input_shape": (200, 200, 3),
+        "layers": [
+            Flatten(input_shape=(200, 200, 3)),
+            Dense(128, activation='relu'),
+            Dense(128, activation='relu'),
+            Dense(64, activation='relu'),
+            Dense(64, activation='relu'),
+            Dense(1, activation='sigmoid'),
+        ]
+    },
 ]
 

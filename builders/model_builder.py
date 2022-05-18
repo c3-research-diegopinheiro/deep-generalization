@@ -3,6 +3,7 @@ import tensorflow as tf
 from tensorflow.keras import models
 from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
+from tensorflow.keras.utils import plot_model
 
 
 def __compile_model(layers, alpha):
@@ -48,6 +49,7 @@ def __generate_model(input_shape, batch_size, alpha, epoch, layers, train_path, 
     model = __compile_model(layers, alpha)
     callbacks = __create_callbacks(alpha)
     train_images, validation_images = __data_augment(train_path, validation_path, batch_size, input_shape)
+    plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
 
     print("Iniciando treino do Modelo...")
     history = model.fit(
