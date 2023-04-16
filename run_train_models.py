@@ -1,5 +1,5 @@
 import traceback
-
+import os
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from builders import metrics_builder, model_builder
 from utils.results_writer import ResultsWriter
@@ -11,13 +11,13 @@ def run(model_config):
         rw = ResultsWriter(model_config['name'])
         for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
             trained_model = model_builder.train_model_for_dataset(
-                model_config, f'dataset/train_{noise_amount}'
+                model_config, f'{os.getcwd()}/dataset/train_{noise_amount}'
             )
             rw.write_model(trained_model, f'train_{noise_amount}')
 
             for noise_amount_testing in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
                 test_images = ImageDataGenerator(rescale=1 / 255).flow_from_directory(
-                    f'DATASET/test_{noise_amount_testing}',
+                    f'{os.getcwd()}/dataset/test_{noise_amount_testing}',
                     target_size=(200, 200),
                     shuffle=False,
                     class_mode='binary',

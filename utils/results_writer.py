@@ -16,7 +16,7 @@ class ResultsWriter:
 
     def __init__(self, name):
         self.results_name = name
-        self.results_folder = f'output/results_{name}_{datetime.now().isoformat().__str__()}'
+        self.results_folder = f'{os.getcwd()}/output/results_{name}_{datetime.now().isoformat().__str__()}'
         os.mkdir(self.results_folder)
 
     def __generate_df_by_csv(self):
