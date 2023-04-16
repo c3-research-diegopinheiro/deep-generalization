@@ -3,7 +3,6 @@ import tensorflow as tf
 from tensorflow.keras import models
 from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
-from tensorflow.keras.utils import plot_model
 
 
 def __compile_model(layers, alpha):
@@ -24,16 +23,32 @@ def __compile_model(layers, alpha):
     return model
 
 
-def __data_augment(train_path, validation_path, batch_size, input_shape):
-    image_gen = ImageDataGenerator(rotation_range=40, rescale=1 / 255, horizontal_flip=True, vertical_flip=True)
+def __data_augment(train_path, batch_size, input_shape):
+    train_datagen = ImageDataGenerator(
+        rotation_range=40, 
+        rescale=1 / 255, 
+        horizontal_flip=True,
+        vertical_flip=True,
+        validation_split=0.1
+    )
 
-    train_images = image_gen.flow_from_directory(train_path, target_size=input_shape[:2],
-                                                 batch_size=batch_size, class_mode='binary')
-    validation_images = image_gen.flow_from_directory(validation_path,
-                                                      target_size=input_shape[:2], batch_size=batch_size,
-                                                      class_mode='binary')
+    train_generator = train_datagen.flow_from_directory(
+        train_path,
+        target_size=input_shape[:2],
+        batch_size=batch_size,
+        classes=None,
+        class_mode='binary',
+        subset='training')
 
-    return train_images, validation_images
+    validation_generator = train_datagen.flow_from_directory(
+        train_path, 
+        target_size=input_shape[:2],
+        batch_size=batch_size,
+        classes=None,
+        class_mode='binary',
+        subset='validation')
+
+    return train_generator, validation_generator
 
 
 def __create_callbacks(alpha):
@@ -45,33 +60,31 @@ def __create_callbacks(alpha):
     return callbacks
 
 
-def __generate_model(input_shape, batch_size, alpha, epoch, layers, train_path, validation_path):
+def __generate_model(input_shape, batch_size, alpha, epoch, layers, train_path):
     model = __compile_model(layers, alpha)
     callbacks = __create_callbacks(alpha)
-    train_images, validation_images = __data_augment(train_path, validation_path, batch_size, input_shape)
-    plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
+    train_generator, validation_generator = __data_augment(train_path, batch_size, input_shape)
 
     print("Iniciando treino do Modelo...")
     history = model.fit(
-        train_images,
-        validation_data=validation_images,
+        train_generator,
+        validation_data = validation_generator, 
         callbacks=callbacks,
         epochs=epoch
     )
 
-    return history, model, train_images, validation_images
+    return history, model
 
 
-def train_model_for_dataset(model_config, train_folder_path, validation_folder_path):
-    print(f'Training for {train_folder_path} and {validation_folder_path} dataset')
-    history, model, train_images, validation_images = __generate_model(
+def train_model_for_dataset(model_config, train_folder_path):
+    print(f'Training for {train_folder_path} dataset')
+    history, model = __generate_model(
         model_config['input_shape'],
         model_config['batch_size'],
         model_config['alpha'],
         model_config['epochs'],
         model_config['layers'],
-        train_folder_path,
-        validation_folder_path,
+        train_folder_path
     )
 
     return model

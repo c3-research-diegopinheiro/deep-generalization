@@ -3,20 +3,6 @@ from tensorflow.keras.applications import VGG16, ResNet50
 
 model_configs = [
     {
-        "name": "simple-mlp",
-        "batch_size": 15,
-        "alpha": 1e-3,
-        "epochs": 30,
-        "input_shape": (200, 200, 3),
-        "layers": [
-            Flatten(input_shape=(200, 200, 3)),
-            Dense(64, activation='relu'),
-            Dense(32, activation='relu'),
-            Dense(16, activation='relu'),
-            Dense(1, activation='sigmoid'),
-        ]
-    },
-    {
         "name": "cnn",
         "batch_size": 15,
         "alpha": 1e-3,
@@ -34,39 +20,22 @@ model_configs = [
         ]
     },
     {
-        "name": "vgg16",
+        "name": "mlp",
         "batch_size": 15,
         "alpha": 1e-3,
         "epochs": 30,
         "input_shape": (200, 200, 3),
         "layers": [
-            VGG16(
-                include_top=False,
-                input_shape=(200, 200, 3)
-            ),
-            Flatten(),
-            Dropout(0.5),
+            Flatten(input_shape=(200, 200, 3)),
+            Dense(128, activation='relu'),
+            Dense(128, activation='relu'),
+            Dense(64, activation='relu'),
+            Dense(64, activation='relu'),
             Dense(1, activation='sigmoid'),
         ]
     },
     {
-        "name": "resnet50",
-        "batch_size": 15,
-        "alpha": 1e-3,
-        "epochs": 30,
-        "input_shape": (200, 200, 3),
-        "layers": [
-            ResNet50(
-                include_top=False,
-                input_shape=(200, 200, 3)
-            ),
-            Flatten(),
-            Dropout(0.5),
-            Dense(1, activation='sigmoid'),
-        ]
-    },
-    {
-        "name": "simple-mlp-2",
+        "name": "mlp-2",
         "batch_size": 15,
         "alpha": 1e-3,
         "epochs": 30,
@@ -75,23 +44,6 @@ model_configs = [
             Flatten(input_shape=(200, 200, 3)),
             Dense(64, activation='relu'),
             Dense(32, activation='relu'),
-            Dense(16, activation='relu'),
-            Dense(8, activation='relu'),
-            Dense(1, activation='sigmoid'),
-        ]
-    },
-    {
-        "name": "simple-mlp-3",
-        "batch_size": 15,
-        "alpha": 1e-3,
-        "epochs": 30,
-        "input_shape": (200, 200, 3),
-        "layers": [
-            Flatten(input_shape=(200, 200, 3)),
-            Dense(128, activation='relu'),
-            Dense(128, activation='relu'),
-            Dense(64, activation='relu'),
-            Dense(64, activation='relu'),
             Dense(1, activation='sigmoid'),
         ]
     },
