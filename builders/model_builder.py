@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow.keras import models
 from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
-
+import os
 
 def __compile_model(layers, alpha):
     model = models.Sequential()
