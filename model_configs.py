@@ -34,18 +34,5 @@ model_configs = [
             Dense(1, activation='sigmoid'),
         ]
     },
-    {
-        "name": "mlp-2",
-        "batch_size": 15,
-        "alpha": 1e-3,
-        "epochs": 30,
-        "input_shape": (200, 200, 3),
-        "layers": [
-            Flatten(input_shape=(200, 200, 3)),
-            Dense(64, activation='relu'),
-            Dense(32, activation='relu'),
-            Dense(1, activation='sigmoid'),
-        ]
-    },
 ]
 

@@ -7,8 +7,9 @@ from model_configs import model_configs
 
 
 def run(model_config):
+    rw = ResultsWriter(model_config['name'])
+
     try:
-        rw = ResultsWriter(model_config['name'])
         for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
             trained_model = model_builder.train_model_for_dataset(
                 model_config, f'{os.getcwd()}/dataset/train_{noise_amount}'
@@ -27,7 +28,10 @@ def run(model_config):
                 trained_model.evaluate(test_images)
 
                 cm = metrics_builder.generate_confusion_matrix(trained_model, test_images, model_config['batch_size'])
-                cr = metrics_builder.generate_classification_report(trained_model, test_images, model_config['batch_size'])
+                cr = metrics_builder.generate_classification_report(trained_model,
+                                                                    test_images,
+                                                                    model_config['batch_size']
+                                                                    )
 
                 rw.write_metrics_results(
                     f'train_{noise_amount}_test_{noise_amount_testing}',
@@ -42,6 +46,7 @@ def run(model_config):
         print(e.__str__())
         print('Removing results folder for this execution')
         rw.delete_results()
+
 
 if __name__ == '__main__':
     run(model_configs[2])
