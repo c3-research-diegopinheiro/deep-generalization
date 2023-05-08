@@ -5,7 +5,7 @@ from sklearn.model_selection import KFold
 from builders import metrics_builder, model_builder
 from utils.results_writer import ResultsWriter
 from model_configs import model_configs
-from temp2 import get_train_generator
+from temp2 import get_train_generator, get_test_generator
 
 
 def run(data_x, data_y, model_config):
@@ -22,7 +22,7 @@ def run(data_x, data_y, model_config):
                 rw.write_model(trained_model, f'train_{noise_amount}')
 
                 for noise_amount_testing in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
-                    test_generator = get_train_generator(data_x, data_y, noise_amount_testing, test_index)
+                    test_generator = get_test_generator(data_x, data_y, noise_amount_testing, test_index)
                     trained_model.evaluate(test_generator)
 
                     cm = metrics_builder.generate_confusion_matrix(trained_model,
