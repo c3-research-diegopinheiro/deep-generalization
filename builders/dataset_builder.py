@@ -7,11 +7,9 @@ from utils.mkdir_dataset import mkdir_dataset
 
 
 def __write_images(dataset_name, noise_amount, image_path_arr):
-    image_path_str = '/'.join(image_path_arr)
-    default_image_path = f'{os.getcwd()}/dataset/default/{image_path_str}'
-    img = cv2.imread(default_image_path)
-    print(f'Generating with noise of {noise_amount} for {image_path_str}')
-    new_image_path = f'{os.getcwd()}/dataset/{dataset_name}/{image_path_arr[1]}/{image_path_arr[2]}'
+    print(f'Generating with noise of {noise_amount} for {os.path.basename(image_path_arr)}')
+    img = cv2.imread(image_path_arr)
+    new_image_path = f'{os.getcwd()}/dataset/{dataset_name}/{os.path.basename(image_path_arr)}'
     if not os.path.exists(new_image_path):
         gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         noise_img = random_noise(gray_image, mode='salt', amount=noise_amount)
@@ -19,11 +17,11 @@ def __write_images(dataset_name, noise_amount, image_path_arr):
         cv2.imwrite(new_image_path, noise_img)
 
 
-def generate_dataset(dataset_name, dataset_kind, noise_amount):
+def generate_dataset(dataset_name, noise_amount):
     mkdir_dataset(dataset_name)
     print('Copying images to the new dataset')
     df = pd.read_csv(f'{os.getcwd()}/dataset/dataframe.csv')
     [
         __write_images(dataset_name, noise_amount, path_array)
-        for path_array in df[['Dataset', 'State', 'Path']].to_numpy() if path_array[0] == dataset_kind
+        for path_array in df['images'].to_numpy()
     ]

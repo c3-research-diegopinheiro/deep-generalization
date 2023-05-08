@@ -23,34 +23,6 @@ def __compile_model(layers, alpha):
     return model
 
 
-def __data_augment(train_path, batch_size, input_shape):
-    train_datagen = ImageDataGenerator(
-        rotation_range=40, 
-        rescale=1 / 255, 
-        horizontal_flip=True,
-        vertical_flip=True,
-        validation_split=0.1
-    )
-
-    train_generator = train_datagen.flow_from_directory(
-        train_path,
-        target_size=input_shape[:2],
-        batch_size=batch_size,
-        classes=None,
-        class_mode='binary',
-        subset='training')
-
-    validation_generator = train_datagen.flow_from_directory(
-        train_path, 
-        target_size=input_shape[:2],
-        batch_size=batch_size,
-        classes=None,
-        class_mode='binary',
-        subset='validation')
-
-    return train_generator, validation_generator
-
-
 def __create_callbacks(alpha):
     filepath = f'{os.getcwd()}/output/last_generated_model.hdf5'
     checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
@@ -60,15 +32,14 @@ def __create_callbacks(alpha):
     return callbacks
 
 
-def __generate_model(input_shape, batch_size, alpha, epoch, layers, train_path):
+def __generate_model(alpha, epoch, layers, train_generator, validation_generator):
     model = __compile_model(layers, alpha)
     callbacks = __create_callbacks(alpha)
-    train_generator, validation_generator = __data_augment(train_path, batch_size, input_shape)
 
     print("Iniciando treino do Modelo...")
     history = model.fit(
         train_generator,
-        validation_data = validation_generator, 
+        validation_data=validation_generator,
         callbacks=callbacks,
         epochs=epoch
     )
@@ -76,15 +47,14 @@ def __generate_model(input_shape, batch_size, alpha, epoch, layers, train_path):
     return history, model
 
 
-def train_model_for_dataset(model_config, train_folder_path):
-    print(f'Training for {train_folder_path} dataset')
+def train_model_for_dataset(model_config, train_generator, validation_generator):
+    # print(f'Training for {train_folder_path} dataset')
     history, model = __generate_model(
-        model_config['input_shape'],
-        model_config['batch_size'],
         model_config['alpha'],
         model_config['epochs'],
         model_config['layers'],
-        train_folder_path
+        train_generator,
+        validation_generator,
     )
 
     return model

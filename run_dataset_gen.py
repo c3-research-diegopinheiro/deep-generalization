@@ -5,17 +5,20 @@ from pathlib import Path
 
 
 def run(used_dataset):
-    paths = []
-    for ext in ['*.jpg', '*.jpeg', '*.JPG', '*.png']:
-        paths = [*paths, *[path.parts[-3:] for path in Path(used_dataset).rglob(ext)]]
+    f = []
+    for (_, _, filenames) in os.walk(used_dataset):
+        f.extend(filenames)
 
-    df = pd.DataFrame(data=paths, columns=['Dataset', 'State', 'Path'])
+    f = list(map(lambda x: f'{used_dataset}/{x}', f))
+
+    classes = ['no' if 'n' in os.path.basename(file) else 'yes' for file in f]
+
+    df = pd.DataFrame({'images': f, 'classes': classes})
     df.to_csv(f'{os.getcwd()}/dataset/dataframe.csv')
 
-    for dataset_kind in ['train', 'test']:
-        for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
-            dataset_name = f'{dataset_kind}_{noise_amount}'
-            generate_dataset(dataset_name, dataset_kind, noise_amount)
+    for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
+        dataset_name = f'noise_{noise_amount}'
+        generate_dataset(dataset_name, noise_amount)
 
 
 if __name__ == '__main__':
