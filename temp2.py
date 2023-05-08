@@ -1,17 +1,15 @@
-from keras.preprocessing.image import  ImageDataGenerator, img_to_array, image, load_img
+from keras.preprocessing.image import  ImageDataGenerator
 import pandas as pd
 
 
-def get_dataset_generators(x, y, noise, train_index, test_index):
+def get_train_generator(x, y, noise, train_index):
     x = list(map(lambda p: p.replace('default', f'noise_{noise}'), x))
     df = pd.DataFrame({'images': x })
     x = df['images']
 
-    x_train, y_train, x_test, y_test = \
-        x[train_index], y[train_index], x[test_index], y[test_index]
+    x_train, y_train = x[train_index], y[train_index]
 
     df_train = pd.DataFrame({'id': x_train, 'label': y_train})
-    df_test = pd.DataFrame({'id': x_test, 'label': y_test})
 
     train_gen = ImageDataGenerator(
         rotation_range=40,
@@ -41,6 +39,18 @@ def get_dataset_generators(x, y, noise, train_index, test_index):
         shuffle=False,
         subset='validation')
 
+    return train_generator, validation_generator
+
+
+def get_test_generator(x, y, noise, test_index):
+    x = list(map(lambda p: p.replace('default', f'noise_{noise}'), x))
+    df = pd.DataFrame({'images': x})
+    x = df['images']
+
+    x_test, y_test = x[test_index], y[test_index]
+
+    df_test = pd.DataFrame({'id': x_test, 'label': y_test})
+
     test_generator = ImageDataGenerator(
         rescale=1 / 255,
     ).flow_from_dataframe(
@@ -52,5 +62,5 @@ def get_dataset_generators(x, y, noise, train_index, test_index):
         class_mode='binary',
         shuffle=False)
 
-    return train_generator, validation_generator, test_generator
+    return test_generator
 
