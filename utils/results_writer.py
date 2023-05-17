@@ -2,6 +2,7 @@ import pandas as pd
 from utils.consts import results_columns
 import os
 from datetime import datetime
+from utils.mkdir_folders import mkdir_output
 
 
 def isfloat(num):
@@ -16,6 +17,7 @@ class ResultsWriter:
 
     def __init__(self, name):
         self.results_name = name
+        mkdir_output()
         self.results_folder = f'{os.getcwd()}/output/results_{name}_{datetime.now().isoformat().__str__()}'
         os.mkdir(self.results_folder)
 

@@ -3,7 +3,7 @@ import numpy as np
 from skimage.util import random_noise
 import pandas as pd
 import os
-from utils.mkdir_dataset import mkdir_dataset
+from utils.mkdir_folders import mkdir_dataset
 
 
 def __write_images(dataset_name, noise_amount, image_path_arr):

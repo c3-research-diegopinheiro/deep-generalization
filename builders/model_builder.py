@@ -1,9 +1,9 @@
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
 from tensorflow.keras import models
 from tensorflow.keras.optimizers import SGD, Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 import os
+
 
 def __compile_model(layers, alpha):
     model = models.Sequential()
@@ -19,7 +19,6 @@ def __compile_model(layers, alpha):
                   optimizer=opt,
                   metrics=['acc'])
 
-    print("Modelo Compilado")
     return model
 
 
@@ -36,7 +35,6 @@ def __generate_model(alpha, epoch, layers, train_generator, validation_generator
     model = __compile_model(layers, alpha)
     callbacks = __create_callbacks(alpha)
 
-    print("Iniciando treino do Modelo...")
     history = model.fit(
         train_generator,
         validation_data=validation_generator,
@@ -48,7 +46,6 @@ def __generate_model(alpha, epoch, layers, train_generator, validation_generator
 
 
 def train_model_for_dataset(model_config, train_generator, validation_generator):
-    # print(f'Training for {train_folder_path} dataset')
     history, model = __generate_model(
         model_config['alpha'],
         model_config['epochs'],

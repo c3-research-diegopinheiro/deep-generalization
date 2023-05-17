@@ -1,5 +1,4 @@
 from sklearn.metrics import classification_report, confusion_matrix
-from utils.consts import sensitivity_specificity_note
 
 
 def __get_model_predictions(model, test_generator, batch_size):
@@ -28,6 +27,5 @@ def generate_confusion_matrix(model, test_generator, batch_size):
 
 
 def generate_classification_report(model, test_generator, batch_size):
-    print(sensitivity_specificity_note)
     cr = __get_classification_report(model, test_generator, batch_size)
     return cr

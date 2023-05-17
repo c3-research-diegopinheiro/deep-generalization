@@ -1,5 +1,4 @@
 from tensorflow.keras.layers import Flatten, Dense, Conv2D, MaxPooling2D, Dropout
-from tensorflow.keras.applications import VGG16, ResNet50
 
 model_configs = [
     {
