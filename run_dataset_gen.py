@@ -16,7 +16,7 @@ def generate_dataframe(datasets_folder, dataframe):
 
 
 def run(datasets_folder):
-    generate_dataframe(datasets_folder, f'dataframe')
+    generate_dataframe(datasets_folder, f'default')
 
     for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
         dataset_name = f'noise_{noise_amount}'
