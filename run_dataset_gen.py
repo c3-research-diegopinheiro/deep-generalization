@@ -20,7 +20,7 @@ def run(datasets_folder):
 
     for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
         dataset_name = f'noise_{noise_amount}'
-        # generate_dataset(dataset_name, noise_amount)
+        generate_dataset(dataset_name, noise_amount)
         generate_dataframe(datasets_folder, noise_amount)
 
 
