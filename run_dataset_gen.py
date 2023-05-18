@@ -8,7 +8,7 @@ def generate_dataframe(datasets_folder, dataframe):
     f = []
     for (_, _, filenames) in os.walk(f'{datasets_folder}/default'):
         f.extend(filenames)
-    f = list(map(lambda x: f'{datasets_folder}/noise_{noise}/{x}', f))
+    f = list(map(lambda x: f'{datasets_folder}/{dataframe}/{x}', f))
     classes = ['no' if 'n' in os.path.basename(file) else 'yes' for file in f]
 
     df = pd.DataFrame({'images': f, 'classes': classes})
