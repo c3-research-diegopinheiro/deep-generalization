@@ -41,11 +41,12 @@ def run(data_x, data_y, model_config):
 
         except Exception as e:
             traceback.print_tb(e.__traceback__)
+            print(e)
             rw.delete_results()
 
 
 if __name__ == '__main__':
-    df = pd.read_csv(f'{os.getcwd()}/dataset/dataframe.csv')
+    df = pd.read_csv(f'{os.getcwd()}/dataset/noise_0.csv')
     x = df['images']
     y = df['classes']
     run(x, y, model_configs[0])

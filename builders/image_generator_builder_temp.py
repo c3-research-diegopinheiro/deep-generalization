@@ -1,21 +1,23 @@
 from keras.preprocessing.image import ImageDataGenerator
 import pandas as pd
+import numpy as np
+import os
 
 NOISE_LEVELS = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]
 
 
 def get_train_generator(x, y, train_index):
-    x_trains = []
-    y_trains = []
+    x_trains = np.array([])
+    y_trains = np.array([])
     for n in NOISE_LEVELS:
-        img = list(map(lambda p: p.replace('default', f'noise_{n}'), x))
-        df = pd.DataFrame({'images': img})
+        df = pd.read_csv(f'{os.getcwd()}/dataset/noise_{n}.csv')
         x = df['images']
         x_train, y_train = x[train_index], y[train_index]
-        x_trains.extend(x_train)
-        y_trains.extend(y_train)
+        x_trains = np.append(x_trains, x_train)
+        y_trains = np.append(y_trains, y_train)
 
-    df_train = pd.DataFrame({'id': x_trains, 'label': y_trains})
+    df_train = pd.DataFrame({'id': x_trains.flatten(), 'label': y_trains.flatten()})
+    df_train.to_csv('bla.csv')
 
     train_gen = ImageDataGenerator(
         rotation_range=40,
