@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 
-def generate_dataframe(datasets_folder, noise):
+def generate_dataframe(datasets_folder, dataframe):
     f = []
     for (_, _, filenames) in os.walk(f'{datasets_folder}/default'):
         f.extend(filenames)
@@ -12,16 +12,16 @@ def generate_dataframe(datasets_folder, noise):
     classes = ['no' if 'n' in os.path.basename(file) else 'yes' for file in f]
 
     df = pd.DataFrame({'images': f, 'classes': classes})
-    df.to_csv(f'{os.getcwd()}/dataset/noise_{noise}.csv')
+    df.to_csv(f'{os.getcwd()}/dataset/{dataframe}.csv')
 
 
 def run(datasets_folder):
-    generate_dataframe(datasets_folder, 0)
+    generate_dataframe(datasets_folder, f'dataframe')
 
     for noise_amount in [0, .1, .2, .3, .4, .5, .6, .7, .8, .9]:
         dataset_name = f'noise_{noise_amount}'
         generate_dataset(dataset_name, noise_amount)
-        generate_dataframe(datasets_folder, noise_amount)
+        generate_dataframe(datasets_folder, dataset_name)
 
 
 if __name__ == '__main__':

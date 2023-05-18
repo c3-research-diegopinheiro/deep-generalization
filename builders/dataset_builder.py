@@ -20,7 +20,7 @@ def __write_images(dataset_name, noise_amount, image_path_arr):
 def generate_dataset(dataset_name, noise_amount):
     mkdir_dataset(dataset_name)
     print('Copying images to the new dataset')
-    df = pd.read_csv(f'{os.getcwd()}/dataset/noise_0.csv')
+    df = pd.read_csv(f'{os.getcwd()}/dataset/dataframe.csv')
     [
         __write_images(dataset_name, noise_amount, path_array)
         for path_array in df['images'].to_numpy()
