@@ -1,8 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import models
-from tensorflow.keras.optimizers import SGD, Adam
-from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
-import os
+from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam
 
 
 def __compile_model(layers, alpha):
@@ -23,11 +22,9 @@ def __compile_model(layers, alpha):
 
 
 def __create_callbacks(alpha):
-    filepath = f'{os.getcwd()}/output/last_generated_model.hdf5'
-    checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
     lr_reduce = ReduceLROnPlateau(monitor='val_loss', factor=0.1, min_delta=alpha, patience=5, verbose=1)
     erl_stopping = tf.keras.callbacks.EarlyStopping(patience=3, monitor='val_loss', verbose=1)
-    callbacks = [checkpoint, lr_reduce, erl_stopping]
+    callbacks = [lr_reduce, erl_stopping]
     return callbacks
 
 

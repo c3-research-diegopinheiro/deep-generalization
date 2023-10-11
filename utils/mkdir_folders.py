@@ -11,8 +11,11 @@ def mkdir_dataset(new_dataset_folder_name):
 
 
 def mkdir_output():
+    output_folder_path = f'{os.getcwd()}/output'
+
     try:
-        os.mkdir(f'{os.getcwd()}/output')
+        if not os.path.exists(output_folder_path):
+            os.mkdir(output_folder_path)
+
     except FileExistsError:
         pass
-

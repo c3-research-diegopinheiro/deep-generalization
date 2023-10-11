@@ -1,8 +1,10 @@
+import os
+
 import cv2
 import numpy as np
-from skimage.util import random_noise
 import pandas as pd
-import os
+from skimage.util import random_noise
+
 from utils.mkdir_folders import mkdir_dataset
 
 
@@ -14,13 +16,15 @@ def __write_images(dataset_name, noise_amount, image_path_arr):
         gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         noise_img = random_noise(gray_image, mode='salt', amount=noise_amount)
         noise_img = np.array(255 * noise_img, dtype='uint8')
+
         cv2.imwrite(new_image_path, noise_img)
 
 
-def generate_dataset(dataset_name, noise_amount):
+def generate_dataset(dataframe_path, dataset_name, noise_amount):
     mkdir_dataset(dataset_name)
     print('Copying images to the new dataset')
-    df = pd.read_csv(f'{os.getcwd()}/dataset/dataframe.csv')
+    df = pd.read_csv(dataframe_path)
+    print(df)
     [
         __write_images(dataset_name, noise_amount, path_array)
         for path_array in df['images'].to_numpy()
